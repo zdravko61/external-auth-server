@@ -26,6 +26,7 @@ const { LdapPlugin } = require("./plugin/ldap");
 const { JwtPlugin } = require("./plugin/jwt");
 const { ForwardPlugin } = require("./plugin/forward");
 const { FirebaseJwtPlugin } = require("./plugin/firebase");
+const { SsiPlugin } = require("./plugin/ssi");
 const { NoopPlugin } = require("./plugin/noop");
 
 // create app instance
@@ -85,6 +86,7 @@ LdapPlugin.initialize(externalAuthServer);
 JwtPlugin.initialize(externalAuthServer);
 FirebaseJwtPlugin.initialize(externalAuthServer);
 ForwardPlugin.initialize(externalAuthServer);
+SsiPlugin.initialize(externalAuthServer);
 NoopPlugin.initialize(externalAuthServer);
 
 app.get("/ping", (req, res) => {
@@ -359,6 +361,9 @@ _verifyHandler = async (req, res, options = {}) => {
               break;
             case "firebase_jwt":
               plugin = new FirebaseJwtPlugin(externalAuthServer, pluginConfig);
+              break;
+            case "ssi":
+              plugin = new SsiPlugin(externalAuthServer, pluginConfig);
               break;
             case "noop":
               plugin = new NoopPlugin(externalAuthServer, pluginConfig);
